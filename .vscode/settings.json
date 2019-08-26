@@ -1,0 +1,7 @@
+{
+  "appService.zipIgnorePattern": [
+    ".vscode{,/**}"
+  ],
+  "appService.deploySubpath": "",
+  "appService.defaultWebAppToDeploy": "/subscriptions/73b5c544-c0ff-46f2-9523-e4569ee5e3bc/resourceGroups/CarCognitionGroup/providers/Microsoft.Web/sites/CarCognitionDashboard-win"
+}
