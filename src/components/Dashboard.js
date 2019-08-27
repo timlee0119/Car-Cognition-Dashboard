@@ -1,15 +1,14 @@
 import React from 'react';
 import PassengerInfo from './PassengerInfo';
 
-const ALERT_INTERVAL = 5000;
+const ALERT_INTERVAL = 2000;
+const PERSON_INTERVAL = 5000;
 
 export default class Dashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // alerts: [],
-      // alerts: ["Unknown Driver", "Drowsiness detected"],
-      alerts: {}, // {'Unknown driver: interval'}
+      alerts: {}, // { 'Unknown driver: interval' }
       passengerInfos: [undefined, undefined, undefined, undefined, undefined]
       // passengerInfos: [{
       //   name: "AAA",
@@ -48,6 +47,22 @@ export default class Dashboard extends React.Component {
     });
   }
 
+  personTimeoutCallback(pos) {
+    this.setState(prevState => {
+      clearTimeout(prevState.passengerInfos[pos].timer);
+      const passengerInfos = prevState.passengerInfos.map((info, idx) => {
+        if (idx === pos) {
+          return undefined;
+        }
+        else {
+          return info;
+        }
+      });
+
+      return { passengerInfos };
+    });
+  }
+
   componentDidMount() {
     const protocol = document.location.protocol.startsWith('https') ? 'wss://' : 'ws://';
     const webSocket = new WebSocket(protocol + window.location.host);
@@ -62,8 +77,8 @@ export default class Dashboard extends React.Component {
           this.setState(prevState => {
             const alerts = { ...prevState.alerts };
             // if already has the alert, reset it
-            if (Object.keys(this.state.alerts).includes(rawData.ALERT)) {
-              clearTimeout(this.state.alerts[rawData.ALERT]);
+            if (Object.keys(prevState.alerts).includes(rawData.ALERT)) {
+              clearTimeout(alerts[rawData.ALERT]);
             }
             alerts[rawData.ALERT] = setTimeout(() => {
               this.alertTimeoutCallback(rawData.ALERT);
@@ -74,12 +89,19 @@ export default class Dashboard extends React.Component {
         // Receive detected message
         else if (rawData.Name) {
           const pos = this.calcPositionNumber(rawData.Position);
+          // if passenger already exist, reset timer
+          if (this.state.passengerInfos[pos]) {
+            clearTimeout(this.state.passengerInfos[pos].timer);
+          }
           const info = {
             name: rawData.Name,
             emotion: rawData.Emotion,
             gender: rawData.Gender,
-            age: rawData.Age
-          }
+            age: rawData.Age,
+            timer: setTimeout(() => {
+              this.personTimeoutCallback(pos);
+            }, PERSON_INTERVAL)
+          };
           this.setState(prevState => {
             const passengerInfos = prevState.passengerInfos.map((oldInfo, idx) => {
               if (idx === pos) {
@@ -88,7 +110,7 @@ export default class Dashboard extends React.Component {
                 return oldInfo;
               }
             });
-  
+
             return { passengerInfos };
           });
         }
@@ -107,7 +129,7 @@ export default class Dashboard extends React.Component {
       <div>
         <img alt="" src="/in-car.png" style={{"width": "1500px", "height": "800px", "opacity": "0.4"}} />
         {this.state.passengerInfos.map((info, idx) => (
-          info && <PassengerInfo key={idx} src="/obama.png" pos={idx} {...info} />
+          info && <PassengerInfo key={idx} pos={idx} {...info} />
         ))}
         <div style={{"position": "absolute", "left": "460px", "top": "530px"}}>
           {Object.keys(this.state.alerts).map((alert, idx) => <h5 key={idx} className="text-danger">{alert}</h5>)}
