@@ -3,13 +3,25 @@ import '../styles/App.css';
 import Topbar from './Topbar';
 import Dashboard from './Dashboard';
 
-function App() {
-  return (
-    <div className="App">
-      <Topbar />
-      <Dashboard />
-    </div>
-  );
-}
+export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      deviceName: ''
+    };
+  }
 
-export default App;
+  onDeviceChange = (deviceName) => {
+    this.setState(state => ({ deviceName }));
+  }
+
+  render() {
+
+    return (
+      <div className="App">
+        <Topbar onDeviceChange={this.onDeviceChange} />
+        <Dashboard />
+      </div>
+    );
+  }
+};

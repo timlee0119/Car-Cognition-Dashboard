@@ -6,8 +6,13 @@ class Topbar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      curDevice: undefined
+      deviceName: undefined
     };
+  }
+
+  changeDevice = (deviceName) => {
+    this.setState(state => ({ deviceName }));
+    this.props.onDeviceChange(deviceName);
   }
 
   render() {
@@ -19,13 +24,13 @@ class Topbar extends React.Component {
           </Navbar.Brand>
           <Dropdown>
             <Dropdown.Toggle variant="success" id="dropdown-basic">
-              {this.state.curDevice || 'Choose a device'}
+              {this.state.deviceName || 'Choose a device'}
             </Dropdown.Toggle>
 
             <Dropdown.Menu>
-              <Dropdown.Item href="#/action-1">TensorRT_AMD64</Dropdown.Item>
-              <Dropdown.Item href="#/action-2">Jetson Nano</Dropdown.Item>
-              <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+              <Dropdown.Item href="#/action-1" onSelect={()=>this.changeDevice('TensorRT_AMD64')}>TensorRT_AMD64</Dropdown.Item>
+              <Dropdown.Item href="#/action-2" onSelect={()=>this.changeDevice('Jetson_nano')}>Jetson_nano</Dropdown.Item>
+              <Dropdown.Item href="#/action-3" onSelect={()=>this.changeDevice('Something else')}>Something else</Dropdown.Item>
             </Dropdown.Menu>        
           </Dropdown>
         </Navbar>
