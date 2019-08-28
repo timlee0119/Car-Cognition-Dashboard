@@ -2,7 +2,8 @@ const express = require('express');
 const http = require('http');
 const path = require('path');
 const WebSocket = require('ws');
-const EventHubReader = require('./event-hub-reader');
+const EventHubReader = require('./scripts/event-hub-reader');
+const DatabaseWriter = require('./scripts/db');
 
 const iotHubConnectionString = "HostName=CarCognitionHub.azure-devices.net;SharedAccessKeyName=service;SharedAccessKey=qiLmgBCZHORrBQ9RIRHkllZ3bl+zdXaHM+x4imF3zSk=";
 const eventHubConsumerGroup = process.env.eventHubConsumerGroup;
@@ -36,9 +37,13 @@ server.listen(port, () => {
 });
 
 const eventHubReader = new EventHubReader(iotHubConnectionString, eventHubConsumerGroup);
+// const databaseWriter = new DatabaseWriter();
+// databaseWriter.connectDB()
+//   .then(mes => console.log(mes))
+//   .catch(err => console.error(err));
 
 (async () => {
-  await eventHubReader.startReadMessage((message, date, deviceId) => {
+  await eventHubReader.startReadMessage(async (message, date, deviceId) => {
     try {
       const payload = {
         IotData: message,
@@ -46,9 +51,11 @@ const eventHubReader = new EventHubReader(iotHubConnectionString, eventHubConsum
         DeviceId: deviceId,
       };
 
+      console.log(payload);
+      // await databaseWriter.writeData(payload.IotData);
       wss.broadcast(JSON.stringify(payload));
     } catch (err) {
-      console.error('Error broadcasting: [%s] from [%s].', err, message);
+      // console.error('Error broadcasting: [%s] from [%s].', err, message);
     }
   });
 })().catch();
