@@ -8,8 +8,8 @@ export default class Dashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      alerts: {}, // { 'Unknown driver: interval' }
-      passengerInfos: [undefined, undefined, undefined, undefined, undefined]
+      // alerts: {}, // { 'Unknown driver: interval' }
+      // passengerInfos: [undefined, undefined, undefined, undefined, undefined]
       // passengerInfos: [{
       //   name: "AAA",
       //   emotion: "neutral",
@@ -21,22 +21,22 @@ export default class Dashboard extends React.Component {
     this.alertTimeoutCallback = this.alertTimeoutCallback.bind(this);
   }
 
-  calcPositionNumber(pos) {
-    var x1, y1;
-    [x1, y1] = pos;
-    if (x1 <= 234 && y1 >= 263) {
-      return 1;
-    }
-    else if (x1 >= 771 && y1 >= 204) {
-      return 0;
-    }
-    else if (x1 >= 518 && x1 <= 718 && y1 <= 226) {
-      return 3;
-    }
-    else {
-      console.error("Unexpected in car position: ", pos);
-    }
-  }
+  // calcPositionNumber(pos) {
+  //   var x1, y1;
+  //   [x1, y1] = pos;
+  //   if (x1 <= 234 && y1 >= 263) {
+  //     return 1;
+  //   }
+  //   else if (x1 >= 771 && y1 >= 204) {
+  //     return 0;
+  //   }
+  //   else if (x1 >= 518 && x1 <= 718 && y1 <= 226) {
+  //     return 3;
+  //   }
+  //   else {
+  //     console.error("Unexpected in car position: ", pos);
+  //   }
+  // }
 
   alertTimeoutCallback(alert) {
     this.setState(prevState => {
@@ -63,66 +63,66 @@ export default class Dashboard extends React.Component {
     });
   }
 
-  componentDidMount() {
-    const protocol = document.location.protocol.startsWith('https') ? 'wss://' : 'ws://';
-    const webSocket = new WebSocket(protocol + window.location.host);
+  // componentDidMount() {
+  //   const protocol = document.location.protocol.startsWith('https') ? 'wss://' : 'ws://';
+  //   const webSocket = new WebSocket(protocol + window.location.host);
 
-    webSocket.onmessage = (function onMessage(message) {
-      try {
-        const messageData = JSON.parse(message.data);
-        const rawData = messageData.IotData;
+  //   webSocket.onmessage = (function onMessage(message) {
+  //     try {
+  //       const messageData = JSON.parse(message.data);
+  //       const rawData = messageData.IotData;
 
-        // Receive alert message
-        if (rawData.ALERT) {
-          this.setState(prevState => {
-            const alerts = { ...prevState.alerts };
-            // if already has the alert, reset it
-            if (Object.keys(prevState.alerts).includes(rawData.ALERT)) {
-              clearTimeout(alerts[rawData.ALERT]);
-            }
-            alerts[rawData.ALERT] = setTimeout(() => {
-              this.alertTimeoutCallback(rawData.ALERT);
-            }, ALERT_INTERVAL);
-            return { alerts };
-          });
-        }
-        // Receive detected message
-        else if (rawData.Name) {
-          const pos = this.calcPositionNumber(rawData.Position);
-          // if passenger already exist, reset timer
-          if (this.state.passengerInfos[pos]) {
-            clearTimeout(this.state.passengerInfos[pos].timer);
-          }
-          const info = {
-            name: rawData.Name,
-            emotion: rawData.Emotion,
-            gender: rawData.Gender,
-            age: rawData.Age,
-            timer: setTimeout(() => {
-              this.personTimeoutCallback(pos);
-            }, PERSON_INTERVAL)
-          };
-          this.setState(prevState => {
-            const passengerInfos = prevState.passengerInfos.map((oldInfo, idx) => {
-              if (idx === pos) {
-                return info;
-              } else {
-                return oldInfo;
-              }
-            });
+  //       // Receive alert message
+  //       if (rawData.ALERT) {
+  //         this.setState(prevState => {
+  //           const alerts = { ...prevState.alerts };
+  //           // if already has the alert, reset it
+  //           if (Object.keys(prevState.alerts).includes(rawData.ALERT)) {
+  //             clearTimeout(alerts[rawData.ALERT]);
+  //           }
+  //           alerts[rawData.ALERT] = setTimeout(() => {
+  //             this.alertTimeoutCallback(rawData.ALERT);
+  //           }, ALERT_INTERVAL);
+  //           return { alerts };
+  //         });
+  //       }
+  //       // Receive detected message
+  //       else if (rawData.Name) {
+  //         const pos = this.calcPositionNumber(rawData.Position);
+  //         // if passenger already exist, reset timer
+  //         if (this.state.passengerInfos[pos]) {
+  //           clearTimeout(this.state.passengerInfos[pos].timer);
+  //         }
+  //         const info = {
+  //           name: rawData.Name,
+  //           emotion: rawData.Emotion,
+  //           gender: rawData.Gender,
+  //           age: rawData.Age,
+  //           timer: setTimeout(() => {
+  //             this.personTimeoutCallback(pos);
+  //           }, PERSON_INTERVAL)
+  //         };
+  //         this.setState(prevState => {
+  //           const passengerInfos = prevState.passengerInfos.map((oldInfo, idx) => {
+  //             if (idx === pos) {
+  //               return info;
+  //             } else {
+  //               return oldInfo;
+  //             }
+  //           });
 
-            return { passengerInfos };
-          });
-        }
-        // Receive undefined message
-        else {
-          throw new Error('Undefined message received: ' + JSON.stringify(rawData));
-        }
-      } catch (err) {
-        console.error(err);
-      }
-    }).bind(this);
-  }
+  //           return { passengerInfos };
+  //         });
+  //       }
+  //       // Receive undefined message
+  //       else {
+  //         throw new Error('Undefined message received: ' + JSON.stringify(rawData));
+  //       }
+  //     } catch (err) {
+  //       console.error(err);
+  //     }
+  //   }).bind(this);
+  // }
 
   render() {
     return (

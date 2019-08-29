@@ -23,8 +23,13 @@
   color: #61dafb;
 }
 
+h5 {
+  font-size: 1.1vw;
+}
+
 h6 {
-  margin-bottom: 0px !important
+  margin-bottom: 0px !important;
+  font-size: 0.9vw;
 }
 
 @keyframes App-logo-spin {

@@ -6,13 +6,14 @@ class Topbar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      deviceName: undefined
+      curDevice: undefined,
+      deviceNames: ['TensorRT_AMD64', 'Jetson_nano', 'IEI_TANK', 'UP2']
     };
   }
 
-  changeDevice = (deviceName) => {
-    this.setState(state => ({ deviceName }));
-    this.props.onDeviceChange(deviceName);
+  changeDevice = (curDevice) => {
+    this.setState(state => ({ curDevice }));
+    this.props.onDeviceChange(curDevice);
   }
 
   render() {
@@ -24,13 +25,16 @@ class Topbar extends React.Component {
           </Navbar.Brand>
           <Dropdown>
             <Dropdown.Toggle variant="success" id="dropdown-basic">
-              {this.state.deviceName || 'Choose a device'}
+              {this.state.curDevice || 'Choose a device'}
             </Dropdown.Toggle>
 
             <Dropdown.Menu>
-              <Dropdown.Item href="#/action-1" onSelect={()=>this.changeDevice('TensorRT_AMD64')}>TensorRT_AMD64</Dropdown.Item>
-              <Dropdown.Item href="#/action-2" onSelect={()=>this.changeDevice('Jetson_nano')}>Jetson_nano</Dropdown.Item>
-              <Dropdown.Item href="#/action-3" onSelect={()=>this.changeDevice('Something else')}>Something else</Dropdown.Item>
+              {
+                this.state.deviceNames.map((name, idx) => 
+                <Dropdown.Item key={idx} onSelect={()=>this.changeDevice(name)}>
+                  {name}
+                </Dropdown.Item>)
+              }
             </Dropdown.Menu>        
           </Dropdown>
         </Navbar>
