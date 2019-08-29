@@ -8,34 +8,35 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       curDevice: '',
-      alerts: ['Unknown Driver', 'Yawn'],
-      // passengerInfos: [undefined, undefined, undefined, undefined, undefined]
-      passengerInfos: [{
-        name: "AAA",
-        emotion: "neutral",
-        gender: "female",
-        age: "teenager"       
-      }, {
-        name: "AAA",
-        emotion: "neutral",
-        gender: "female",
-        age: "teenager"       
-      }, {
-        name: "AAA",
-        emotion: "neutral",
-        gender: "female",
-        age: "teenager"       
-      }, {
-        name: "AAA",
-        emotion: "neutral",
-        gender: "female",
-        age: "teenager"       
-      }, {
-        name: "AAA",
-        emotion: "neutral",
-        gender: "female",
-        age: "teenager"       
-      }],
+      alerts: [],
+      // alerts: ['Unknown Driver', 'Yawn'],
+      passengerInfos: [undefined, undefined, undefined, undefined, undefined],
+      // passengerInfos: [{
+      //   name: "AAA",
+      //   emotion: "neutral",
+      //   gender: "female",
+      //   age: "teenager"       
+      // }, {
+      //   name: "AAA",
+      //   emotion: "neutral",
+      //   gender: "female",
+      //   age: "teenager"       
+      // }, {
+      //   name: "AAA",
+      //   emotion: "neutral",
+      //   gender: "female",
+      //   age: "teenager"       
+      // }, {
+      //   name: "AAA",
+      //   emotion: "neutral",
+      //   gender: "female",
+      //   age: "teenager"       
+      // }, {
+      //   name: "AAA",
+      //   emotion: "neutral",
+      //   gender: "female",
+      //   age: "teenager"       
+      // }],
       imgWidth: 1500
     };
   }
@@ -153,10 +154,10 @@ export default class App extends React.Component {
       <div className="App container-fluid p-0">
         <Topbar onDeviceChange={this.onDeviceChange} />
 
-        <div className="row">
+        <div className="row w-100">
           <div className="col-sm"></div>
           <div className="col-sm-10">
-            <img alt="" src="/in-car.png" style={{"width": this.state.imgWidth, "height": this.state.imgWidth*0.53, "opacity": "0.4"}} />
+            <img alt="" src="/in-car-trans.png" style={{"width": this.state.imgWidth, "height": this.state.imgWidth*0.53, "opacity": "0.4"}} />
             {this.state.passengerInfos.map((info, idx) => (
               info && <PassengerInfo key={idx} pos={idx} imgWidth={this.state.imgWidth} {...info} />
             ))}

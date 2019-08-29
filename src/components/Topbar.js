@@ -23,8 +23,8 @@ class Topbar extends React.Component {
           <Navbar.Brand href="#home" className="pl-3">
             {'Car Cognition Dashboard'}
           </Navbar.Brand>
-          <Dropdown>
-            <Dropdown.Toggle variant="success" id="dropdown-basic">
+          <Dropdown style={{"left": "30px"}}>
+            <Dropdown.Toggle variant="secondary" id="dropdown-basic">
               {this.state.curDevice || 'Choose a device'}
             </Dropdown.Toggle>
 
