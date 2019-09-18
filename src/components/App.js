@@ -9,34 +9,34 @@ export default class App extends React.Component {
     this.state = {
       curDevice: '',
       alerts: [],
-      // alerts: ['Unknown Driver', 'Yawn'],
+      alerts: ['Unknown Driver', 'Yawn'],
       passengerInfos: [undefined, undefined, undefined, undefined, undefined],
-      // passengerInfos: [{
-      //   name: "AAA",
-      //   emotion: "neutral",
-      //   gender: "female",
-      //   age: "teenager"       
-      // }, {
-      //   name: "AAA",
-      //   emotion: "neutral",
-      //   gender: "female",
-      //   age: "teenager"       
-      // }, {
-      //   name: "AAA",
-      //   emotion: "neutral",
-      //   gender: "female",
-      //   age: "teenager"       
-      // }, {
-      //   name: "AAA",
-      //   emotion: "neutral",
-      //   gender: "female",
-      //   age: "teenager"       
-      // }, {
-      //   name: "AAA",
-      //   emotion: "neutral",
-      //   gender: "female",
-      //   age: "teenager"       
-      // }],
+      passengerInfos: [{
+        name: "AAA",
+        emotion: "neutral",
+        gender: "female",
+        age: "teenager"       
+      }, {
+        name: "AAA",
+        emotion: "neutral",
+        gender: "female",
+        age: "teenager"       
+      }, {
+        name: "AAA",
+        emotion: "neutral",
+        gender: "female",
+        age: "teenager"       
+      }, {
+        name: "AAA",
+        emotion: "neutral",
+        gender: "female",
+        age: "teenager"       
+      }, {
+        name: "AAA",
+        emotion: "neutral",
+        gender: "female",
+        age: "teenager"       
+      }],
       imgWidth: 1500
     };
   }
@@ -69,7 +69,8 @@ export default class App extends React.Component {
 
   updateDimensions = () => {
     var body = document.getElementsByTagName('body')[0];
-    this.setState(state => ({imgWidth: body.clientWidth * 0.8}));
+    // this.setState(state => ({imgWidth: body.clientWidth * 0.8}));
+    this.setState(state => ({imgWidth: body.clientWidth * 0.99}));
   }
 
   onDeviceChange = (curDevice) => {
@@ -154,18 +155,19 @@ export default class App extends React.Component {
       <div className="App container-fluid p-0">
         <Topbar onDeviceChange={this.onDeviceChange} />
 
-        <div className="row w-100">
-          <div className="col-sm"></div>
-          <div className="col-sm-10">
+        <div className="row w-100 mx-0">
+          {/* <div className="col-sm"></div> */}
+          {/* <div className="col-sm-10"> */}
+          <div className="col px-0">
             <img alt="" src="/in-car-trans.png" style={{"width": this.state.imgWidth, "height": this.state.imgWidth*0.53, "opacity": "0.4"}} />
             {this.state.passengerInfos.map((info, idx) => (
               info && <PassengerInfo key={idx} pos={idx} imgWidth={this.state.imgWidth} {...info} />
             ))}
             <div style={{"position": "absolute", "left": this.state.imgWidth*0.33, "top": this.state.imgWidth*0.32}}>
-              {this.state.alerts.map((alert, idx) => <h5 key={idx} className="text-danger">{alert}</h5>)}
+              {this.state.alerts.map((alert, idx) => <h6 key={idx} className="text-danger info-text">{alert}</h6>)}
             </div>
           </div>
-          <div className="col-sm"></div>
+          {/* <div className="col-sm"></div> */}
         </div>
 
       </div>

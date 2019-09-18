@@ -18,7 +18,7 @@ export default class PassengerInfo extends React.Component {
         fear: 'text-light',
         contempt: 'text-secondary'
       },
-      emojiSize: '2.5vw'
+      emojiSize: '3.5vw'
     };
   }
 
@@ -92,10 +92,10 @@ export default class PassengerInfo extends React.Component {
           {
             this.props.name ? (
               <>
-                <h6>Name: <span className="text-info">{this.props.name}</span></h6>
-                <h6>Age: <span className="text-info">{this.props.age}</span></h6>
-                <h6>Emotion: <span className={this.state.emoColorMap[this.props.emotion]}>{this.props.emotion}</span></h6>
-                <h6>Gender: <span className={this.props.gender === 'male' ? 'text-primary' : 'text-danger'}>{this.props.gender}</span></h6>
+                <h6 className="info-text mb-0">Name: <span className="text-info">{this.props.name}</span></h6>
+                <h6 className="info-text mb-0">Age: <span className="text-info">{this.props.age}</span></h6>
+                <h6 className="info-text mb-0">Emotion: <span className={this.state.emoColorMap[this.props.emotion]}>{this.props.emotion}</span></h6>
+                <h6 className="info-text mb-0">Gender: <span className={this.props.gender === 'male' ? 'text-primary' : 'text-danger'}>{this.props.gender}</span></h6>
               </>
             ) : (
               <>
